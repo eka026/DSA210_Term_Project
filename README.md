@@ -23,7 +23,7 @@ The data is provided in JSON format.
 ## Project Idea
 The project aims to analyze my YouTube watch history to understand my viewing habits. The main goal is to:
 - Identify changes in my viewing habits over time
-- Examine the types of videos I watch and interacted via likes and comments
+- Examine the types of videos I watch and interacted
 - Detect patterns that may be linked to external events
 
 ---
