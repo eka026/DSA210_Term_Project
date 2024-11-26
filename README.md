@@ -1,9 +1,9 @@
-# Analyzing My YouTube Watch History
+# Analyzing My YouTube Usage
 
 ## Introduction and Motivation
 Social media holds an important place in our lives and is one of the easiest platforms to access for meeting our daily entertainment needs. The same is true for me, as I also spend time on YouTube throughout the day. 
 
-Over the years, the content, categories, and watch durations of the videos I have watched have changed during different periods. Through this project, I plan to analyze changes in my viewing preferences over time, the factors that influence them, and how my watch durations behave. This project will help me learn more about myself and provide an opportunity to practice data analysis.
+Over the years, the content, categories, and watch durations of the videos I have watched and interacted have changed during different periods. Through this project, I plan to analyze changes in my viewing preferences over time, the factors that influence them, and how my watch durations and interactions behave. This project will help me learn more about myself and provide an opportunity to practice data analysis.
 
 ---
 
@@ -23,7 +23,7 @@ The data is provided in JSON format.
 ## Project Idea
 The project aims to analyze my YouTube watch history to understand my viewing habits. The main goal is to:
 - Identify changes in my viewing habits over time
-- Examine the types of videos I watch
+- Examine the types of videos I watch and interacted via likes and comments
 - Detect patterns that may be linked to external events
 
 ---
