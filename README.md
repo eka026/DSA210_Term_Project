@@ -1,4 +1,4 @@
-# DSA210_Project
+# Analyzing My YouTube Watch History
 
 ## Introduction and Motivation
 Social media holds an important place in our lives and is one of the easiest platforms to access for meeting our daily entertainment needs. The same is true for me, as I also spend time on YouTube throughout the day. 
