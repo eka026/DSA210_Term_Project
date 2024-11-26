@@ -56,7 +56,3 @@ Perform exploratory data analysis, including:
 - Present key findings.
 - Provide interpretations based on the analysis.
 
----
-
-## Conclusion
-This project is a personal exploration of my YouTube viewing habits. By analyzing my watch history, I aim to gain insights into my changing preferences over time while learning and practicing data analysis techniques. The project will also enhance my skills in data visualization and machine learning.
