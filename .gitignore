@@ -1,1 +1,3 @@
-
+# Ignore specific files
+watch-history.json
+video_details.csv
