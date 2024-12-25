@@ -4,7 +4,6 @@ Viewing Pattern Analysis Summary
 General Statistics:
 ----------------------------------------
 Total watch time: 4853.3 hours
-Average daily watch time: 3.1 hours
 Average monthly watch time: 88.2 hours
 Peak hour: 19:00 (376.7 hours total)
 Most active day: Tuesday (759.0 hours total)
@@ -66,16 +65,3 @@ Monthly Statistics:
 2024-09: 153.1 hours
 2024-10: 25.2 hours
 2024-11: 23.2 hours
-
-Significant Patterns:
-----------------------------------------
-Number of high-activity days (>2 std): 60
-Number of low-activity days (<2 std): 0
-
-Peak watching days:
-----------------------------------------
-- 2024-09-13: 51.8 hours
-- 2022-06-16: 45.0 hours
-- 2021-05-08: 29.1 hours
-- 2020-05-20: 28.9 hours
-- 2024-08-01: 28.6 hours

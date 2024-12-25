@@ -22,74 +22,84 @@ def create_analysis_plots(df, output_dir='results'):
     # 1. Monthly Watch Time Pattern
     plt.figure(figsize=(15, 8))
     monthly_watch = df.groupby('month')['duration'].sum()
-    sns.lineplot(data=monthly_watch)
     
-    plt.title('Monthly Watch Time Pattern', fontsize=14, pad=20)
+    # Create the line plot
+    ax = sns.lineplot(data=monthly_watch, marker='o', markersize=8)
+    
+    # Customize the plot
+    plt.title('Monthly Watch Time Pattern', fontsize=16, pad=20)
     plt.xlabel('Month', fontsize=12)
     plt.ylabel('Hours Watched', fontsize=12)
-    plt.xticks(rotation=45)
     
-    # Add value labels on points
+    # Show only every nth label to avoid overcrowding
+    n = 3  # Adjust this value to show more or fewer labels
+    plt.xticks(range(0, len(monthly_watch), n), 
+               [monthly_watch.index[i] for i in range(0, len(monthly_watch), n)],
+               rotation=45, ha='right')
+    
+    # Add value labels with better positioning
     for idx, val in enumerate(monthly_watch.values):
-        plt.text(idx, val, f'{val:.1f}h', ha='center', va='bottom')
+        if idx % n == 0:  # Only label every nth point
+            plt.text(idx, val + max(monthly_watch.values) * 0.02,  # Add small vertical offset
+                    f'{val:.1f}h',
+                    ha='center',
+                    va='bottom',
+                    fontsize=10,
+                    bbox=dict(facecolor='white', edgecolor='none', alpha=0.7))
     
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'monthly_pattern.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 2. Daily Watch Time Pattern
+    # 2. Quarterly Category Distribution
     plt.figure(figsize=(15, 8))
-    daily_watch = df.groupby('date')['duration'].sum()
-    sns.lineplot(data=daily_watch)
     
-    # Calculate and annotate significant spikes and drops
-    mean_watch = daily_watch.mean()
-    std_watch = daily_watch.std()
-    spikes = daily_watch[daily_watch > mean_watch + 2*std_watch]
-    drops = daily_watch[daily_watch < mean_watch - 2*std_watch]
+    # Add quarter information with better formatting
+    df['quarter'] = pd.PeriodIndex(df['watched_on'], freq='Q').astype(str).str.replace('Q', '-Q')
     
-    for idx, val in spikes.items():
-        plt.annotate(f'{val:.1f}h', 
-                    xy=(idx, val), 
-                    xytext=(10, 10),
-                    textcoords='offset points',
-                    color='green')
+    # Calculate total duration for each category
+    category_totals = df.groupby('category')['duration'].sum().sort_values(ascending=False)
     
-    for idx, val in drops.items():
-        plt.annotate(f'{val:.1f}h', 
-                    xy=(idx, val), 
-                    xytext=(10, -10),
-                    textcoords='offset points',
-                    color='red')
+    # Identify major categories (top 5) and group others
+    top_categories = category_totals.head(5).index.tolist()
     
-    plt.title('Daily Watch Time Pattern', fontsize=14, pad=20)
-    plt.xlabel('Date', fontsize=12)
-    plt.ylabel('Hours Watched', fontsize=12)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'daily_pattern.png'), dpi=300, bbox_inches='tight')
-    plt.close()
+    # Create a function to map categories
+    def map_category(cat):
+        return cat if cat in top_categories else 'Other'
     
-    # 3. Monthly Category Distribution
-    plt.figure(figsize=(15, 8))
-    monthly_category = df.pivot_table(
+    df['category_grouped'] = df['category'].map(map_category)
+    
+    # Create quarterly aggregation
+    quarterly_category = df.pivot_table(
         values='duration',
-        index='month',
-        columns='category',
+        index='quarter',
+        columns='category_grouped',
         aggfunc='sum',
         fill_value=0
     )
-    monthly_category.plot(kind='bar', stacked=True)
-    plt.title('Monthly Watch Time by Category', fontsize=14, pad=20)
-    plt.xlabel('Month', fontsize=12)
+    
+    # Create grouped bar chart
+    ax = quarterly_category.plot(
+        kind='bar',
+        width=0.8,
+        figsize=(15, 8)
+    )
+    
+    plt.title('Quarterly Watch Time by Category', fontsize=16, pad=20)
+    plt.xlabel('Quarter', fontsize=12)
     plt.ylabel('Hours Watched', fontsize=12)
+    
+    # Customize legend
     plt.legend(title='Category', bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.xticks(rotation=45)
+    
+    # Rotate x-axis labels for better readability
+    plt.xticks(rotation=45, ha='right')
+    
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'monthly_category_pattern.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 4. Hourly Distribution
+    # 3. Hourly Distribution
     plt.figure(figsize=(15, 8))
     hourly_pattern = df.groupby('hour')['duration'].sum()
     sns.barplot(x=hourly_pattern.index, y=hourly_pattern.values)
@@ -105,7 +115,7 @@ def create_analysis_plots(df, output_dir='results'):
     plt.savefig(os.path.join(output_dir, 'hourly_pattern.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 5. Day of Week Distribution
+    # 4. Day of Week Distribution
     plt.figure(figsize=(15, 8))
     day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     daily_pattern = df.groupby('day_of_week')['duration'].sum()
@@ -132,7 +142,6 @@ def create_analysis_plots(df, output_dir='results'):
         f.write("General Statistics:\n")
         f.write("-" * 40 + "\n")
         f.write(f"Total watch time: {df['duration'].sum():.1f} hours\n")
-        f.write(f"Average daily watch time: {daily_watch.mean():.1f} hours\n")
         f.write(f"Average monthly watch time: {monthly_watch.mean():.1f} hours\n")
         f.write(f"Peak hour: {hourly_pattern.idxmax()}:00 ({hourly_pattern.max():.1f} hours total)\n")
         f.write(f"Most active day: {daily_pattern.idxmax()} ({daily_pattern.max():.1f} hours total)\n\n")
@@ -141,24 +150,11 @@ def create_analysis_plots(df, output_dir='results'):
         f.write("-" * 40 + "\n")
         for month, duration in monthly_watch.items():
             f.write(f"{month}: {duration:.1f} hours\n")
-        
-        f.write("\nSignificant Patterns:\n")
-        f.write("-" * 40 + "\n")
-        f.write(f"Number of high-activity days (>2 std): {len(spikes)}\n")
-        f.write(f"Number of low-activity days (<2 std): {len(drops)}\n\n")
-        
-        f.write("Peak watching days:\n")
-        f.write("-" * 40 + "\n")
-        for date, hours in spikes.nlargest(5).items():
-            f.write(f"- {date}: {hours:.1f} hours\n")
     
     return {
         'monthly_watch': monthly_watch,
-        'daily_watch': daily_watch,
         'hourly_pattern': hourly_pattern,
-        'daily_pattern': daily_pattern,
-        'spikes': spikes,
-        'drops': drops
+        'daily_pattern': daily_pattern
     }
 
 def analyze_viewing_patterns(enhanced_categories_path, output_dir='results'):
@@ -173,11 +169,10 @@ def analyze_viewing_patterns(enhanced_categories_path, output_dir='results'):
     
     print(f"\nAnalysis complete! Files have been saved to the '{output_dir}' directory:")
     print("1. monthly_pattern.png - Monthly watching patterns")
-    print("2. daily_pattern.png - Daily watching patterns with spikes and drops")
-    print("3. monthly_category_pattern.png - Monthly patterns by category")
-    print("4. hourly_pattern.png - Distribution of watch time by hour")
-    print("5. daily_distribution.png - Distribution of watch time by day of week")
-    print("6. viewing_statistics.txt - Detailed statistics and patterns")
+    print("2. monthly_category_pattern.png - Monthly patterns by category")
+    print("3. hourly_pattern.png - Distribution of watch time by hour")
+    print("4. daily_distribution.png - Distribution of watch time by day of week")
+    print("5. viewing_statistics.txt - Detailed statistics and patterns")
 
 if __name__ == "__main__":
     # Specify the paths
