@@ -78,22 +78,28 @@ def create_analysis_plots(df, output_dir='results'):
         fill_value=0
     )
     
-    # Create grouped bar chart
+    # Create stacked area chart
     ax = quarterly_category.plot(
-        kind='bar',
-        width=0.8,
-        figsize=(15, 8)
+        kind='area',
+        stacked=True,
+        figsize=(15, 8),
+        alpha=0.75  # Add some transparency
     )
     
     plt.title('Quarterly Watch Time by Category', fontsize=16, pad=20)
     plt.xlabel('Quarter', fontsize=12)
     plt.ylabel('Hours Watched', fontsize=12)
     
+    # Show all quarters
+    plt.xticks(range(len(quarterly_category)), 
+               quarterly_category.index,
+               rotation=45, ha='right')
+    
     # Customize legend
     plt.legend(title='Category', bbox_to_anchor=(1.05, 1), loc='upper left')
     
-    # Rotate x-axis labels for better readability
-    plt.xticks(rotation=45, ha='right')
+    # Add grid for better readability
+    plt.grid(True, alpha=0.3)
     
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'monthly_category_pattern.png'), dpi=300, bbox_inches='tight')
