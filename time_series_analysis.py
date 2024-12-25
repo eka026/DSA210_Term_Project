@@ -51,11 +51,11 @@ def create_analysis_plots(df, output_dir='results'):
     plt.savefig(os.path.join(output_dir, 'monthly_pattern.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 2. Quarterly Category Distribution
+    # 2. Monthly Category Distribution
     plt.figure(figsize=(15, 8))
     
-    # Add quarter information with better formatting
-    df['quarter'] = pd.PeriodIndex(df['watched_on'], freq='Q').astype(str).str.replace('Q', '-Q')
+    # Add month information with better formatting
+    df['month'] = pd.to_datetime(df['watched_on']).dt.strftime('%Y-%m')
     
     # Calculate total duration for each category
     category_totals = df.groupby('category')['duration'].sum().sort_values(ascending=False)
@@ -69,30 +69,34 @@ def create_analysis_plots(df, output_dir='results'):
     
     df['category_grouped'] = df['category'].map(map_category)
     
-    # Create quarterly aggregation
-    quarterly_category = df.pivot_table(
+    # Create monthly aggregation
+    monthly_category = df.pivot_table(
         values='duration',
-        index='quarter',
+        index='month',
         columns='category_grouped',
         aggfunc='sum',
         fill_value=0
     )
     
+    # Sort by month
+    monthly_category = monthly_category.sort_index()
+    
     # Create stacked area chart
-    ax = quarterly_category.plot(
+    ax = monthly_category.plot(
         kind='area',
         stacked=True,
         figsize=(15, 8),
         alpha=0.75  # Add some transparency
     )
     
-    plt.title('Quarterly Watch Time by Category', fontsize=16, pad=20)
-    plt.xlabel('Quarter', fontsize=12)
+    plt.title('Monthly Watch Time by Category', fontsize=16, pad=20)
+    plt.xlabel('Month', fontsize=12)
     plt.ylabel('Hours Watched', fontsize=12)
     
-    # Show all quarters
-    plt.xticks(range(len(quarterly_category)), 
-               quarterly_category.index,
+    # Show every third month
+    n = 3  # Show every 3rd month
+    plt.xticks(range(0, len(monthly_category), n), 
+               [monthly_category.index[i] for i in range(0, len(monthly_category), n)],
                rotation=45, ha='right')
     
     # Customize legend
