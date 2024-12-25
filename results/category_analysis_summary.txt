@@ -1,0 +1,9 @@
+Category Analysis Summary
+=======================
+
+Total Duration: 4853.27 hours
+Average Monthly Duration: 88.24 hours
+Peak Month: 2021-05
+Top Category: Education
+Number of Unique Categories: 15
+Number of Unique Subcategories: 25
