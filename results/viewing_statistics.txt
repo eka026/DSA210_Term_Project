@@ -92,3 +92,28 @@ Kruskal-Wallis H Test Results:
 H-statistic: 2253.8504
 P-value: p < 0.001
 Conclusion: Reject the null hypothesis: There are significant differences in viewing duration distributions across months.
+Conclusion: Reject the null hypothesis: There are significant differences in viewing duration distributions across months.
+
+
+Time Period Analysis
+----------------------------------------
+Comparing watch time distributions across different periods of the day:
+- Morning: 06:00-11:59
+- Afternoon: 12:00-17:59
+- Evening: 18:00-23:59
+- Night: 00:00-05:59 (excluded from comparison)
+
+Total Watch Time by Period:
+Afternoon: 1509.9 hours
+Evening: 1780.8 hours
+Morning: 1174.1 hours
+
+Average Watch Time per Hour by Period:
+Afternoon: 251.7 hours per hour
+Evening: 296.8 hours per hour
+Morning: 195.7 hours per hour
+
+Kruskal-Wallis H Test Results:
+H-statistic: 69.0793
+P-value: p < 0.001
+Conclusion: Reject the null hypothesis: There are significant differences in viewing duration distributions across time periods.

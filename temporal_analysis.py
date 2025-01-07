@@ -224,6 +224,67 @@ def create_analysis_plots(df, output_dir='results'):
         else:
             f.write(f"P-value: {p_value:.4f}\n")  # Format p-value in scientific notation
         f.write(f"Conclusion: {conclusion}\n")
+
+        f.write(f"Conclusion: {conclusion}\n\n")
+        
+        # Time Period Analysis (Morning vs Afternoon vs Evening)
+        f.write("\nTime Period Analysis\n")
+        f.write("-" * 40 + "\n")
+        f.write("Comparing watch time distributions across different periods of the day:\n")
+        f.write("- Morning: 06:00-11:59\n")
+        f.write("- Afternoon: 12:00-17:59\n")
+        f.write("- Evening: 18:00-23:59\n")
+        f.write("- Night: 00:00-05:59 (excluded from comparison)\n\n")
+        
+        # Define time periods (24-hour format)
+        def get_time_period(hour):
+            if 6 <= hour < 12:  # 06:00-11:59
+                return 'morning'
+            elif 12 <= hour < 18:  # 12:00-17:59
+                return 'afternoon'
+            elif 18 <= hour < 24:  # 18:00-23:59
+                return 'evening'
+            else:  # 00:00-05:59
+                return 'night'
+        
+        df['time_period'] = df['hour'].apply(get_time_period)
+        
+        # Get data for each period
+        morning_data = df[df['time_period'] == 'morning']['duration']
+        afternoon_data = df[df['time_period'] == 'afternoon']['duration']
+        evening_data = df[df['time_period'] == 'evening']['duration']
+        
+        # Perform Kruskal-Wallis H test for time periods
+        h_stat_time, p_value_time = kruskal(morning_data, afternoon_data, evening_data)
+        
+        # Calculate total watch time for each period
+        period_totals = df[df['time_period'].isin(['morning', 'afternoon', 'evening'])].groupby('time_period')['duration'].sum()
+        
+        f.write("Total Watch Time by Period:\n")
+        for period, total in period_totals.items():
+            f.write(f"{period.capitalize()}: {total:.1f} hours\n")
+            
+        # Calculate hourly averages (total for period divided by number of hours in period)
+        hours_per_period = {'morning': 6, 'afternoon': 6, 'evening': 6}  # each period is 6 hours
+        f.write("\nAverage Watch Time per Hour by Period:\n")
+        for period in period_totals.index:
+            avg_per_hour = period_totals[period] / hours_per_period[period]
+            f.write(f"{period.capitalize()}: {avg_per_hour:.1f} hours per hour\n")
+        
+        f.write("\nKruskal-Wallis H Test Results:\n")
+        f.write(f"H-statistic: {h_stat_time:.4f}\n")
+        if p_value_time < 0.001:
+            f.write("P-value: p < 0.001\n")
+        else:
+            f.write(f"P-value: {p_value_time:.4f}\n")
+            
+        # Determine conclusion for time period analysis
+        if p_value_time < 0.05:
+            time_period_conclusion = "Reject the null hypothesis: There are significant differences in viewing duration distributions across time periods."
+        else:
+            time_period_conclusion = "Fail to reject the null hypothesis: No significant differences in viewing duration distributions across time periods."
+            
+        f.write(f"Conclusion: {time_period_conclusion}\n")
     
     return {
         'monthly_watch': monthly_watch,
