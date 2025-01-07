@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import os
 from datetime import datetime
 
@@ -81,26 +80,7 @@ def plot_subcategory_distribution():
     plt.savefig('results/subcategory_distribution.png', dpi=300, bbox_inches='tight')
     plt.close()
 
-# 3. Monthly Activity Heatmap
-def plot_monthly_heatmap():
-    # Create pivot table for heatmap
-    monthly_activity = df.pivot_table(
-        values='duration',
-        index=df['month'].dt.strftime('%Y'),
-        columns=df['month'].dt.strftime('%m'),
-        aggfunc='sum'
-    )
-    
-    plt.figure(figsize=(15, 8))
-    sns.heatmap(monthly_activity, annot=True, fmt='.0f', cmap='YlOrRd')
-    plt.title('Monthly Activity Heatmap')
-    plt.xlabel('Month')
-    plt.ylabel('Year')
-    plt.tight_layout()
-    plt.savefig('results/monthly_heatmap.png', dpi=300, bbox_inches='tight')
-    plt.close()
-
-# 4. Generate Summary Statistics
+# 3. Generate Summary Statistics
 def generate_summary():
     summary = {
         'total_duration': df['duration'].sum(),
@@ -131,9 +111,6 @@ def main():
     
     plot_subcategory_distribution()
     print("Subcategory distribution visualization completed")
-    
-    plot_monthly_heatmap()
-    print("Monthly heatmap completed")
     
     generate_summary()
     print("Summary statistics generated")
