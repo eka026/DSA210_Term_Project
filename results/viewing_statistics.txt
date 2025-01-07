@@ -1,28 +1,40 @@
 Viewing Pattern Analysis Summary
 ========================================
 
+Weekday vs Weekend Analysis:
+----------------------------------------
+Total weekday watch time: 3595.2 hours
+Total weekend watch time: 1254.8 hours
+Average daily weekday watch time: 3.2 hours per day
+Average daily weekend watch time: 2.8 hours per day
+
+Statistical Test Results:
+T-statistic: 1.8306
+P-value: 0.0673
+Conclusion: Fail to reject the null hypothesis: There is no significant difference in watch time between weekdays and weekends.
+
 General Statistics:
 ----------------------------------------
-Total watch time: 4853.3 hours
+Total watch time: 4850.1 hours
 Average monthly watch time: 88.2 hours
 Peak hour: 19:00 (376.7 hours total)
-Most active day: Tuesday (759.0 hours total)
+Most active day: Tuesday (757.3 hours total)
 
 Monthly Statistics:
 ----------------------------------------
 2020-05: 76.6 hours
 2020-06: 135.4 hours
 2020-07: 112.1 hours
-2020-08: 131.4 hours
-2020-09: 94.6 hours
+2020-08: 130.7 hours
+2020-09: 94.0 hours
 2020-10: 152.3 hours
-2020-11: 182.9 hours
-2020-12: 162.6 hours
+2020-11: 182.3 hours
+2020-12: 162.5 hours
 2021-01: 182.3 hours
 2021-02: 109.3 hours
 2021-03: 170.8 hours
 2021-04: 161.2 hours
-2021-05: 266.2 hours
+2021-05: 265.9 hours
 2021-06: 187.4 hours
 2021-07: 69.1 hours
 2021-08: 57.4 hours
@@ -33,9 +45,9 @@ Monthly Statistics:
 2022-01: 43.5 hours
 2022-02: 39.9 hours
 2022-03: 70.7 hours
-2022-04: 107.8 hours
+2022-04: 107.5 hours
 2022-05: 160.2 hours
-2022-06: 181.2 hours
+2022-06: 180.7 hours
 2022-07: 75.4 hours
 2022-08: 45.1 hours
 2022-09: 43.2 hours
@@ -60,8 +72,23 @@ Monthly Statistics:
 2024-04: 21.4 hours
 2024-05: 21.4 hours
 2024-06: 54.4 hours
-2024-07: 107.4 hours
+2024-07: 107.3 hours
 2024-08: 124.9 hours
 2024-09: 153.1 hours
 2024-10: 25.2 hours
 2024-11: 23.2 hours
+
+Hypothesis Testing: Temporal Analysis
+----------------------------------------
+Null Hypothesis: The distributions of video watching duration are the same across all months.
+Alternative Hypothesis: The distributions of video watching duration differ across months.
+
+Note: Using Kruskal-Wallis H test instead of ANOVA because:
+1. The data is not normally distributed
+2. There are significant outliers in the viewing durations
+3. The test makes no assumptions about the distribution of the data
+
+Kruskal-Wallis H Test Results:
+H-statistic: 2253.8504
+P-value: p < 0.001
+Conclusion: Reject the null hypothesis: There are significant differences in viewing duration distributions across months.

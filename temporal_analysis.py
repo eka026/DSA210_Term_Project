@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import os
+from scipy.stats import kruskal, ttest_ind
 
 def create_analysis_plots(df, output_dir='results'):
     # Create output directory if it doesn't exist
@@ -12,8 +13,8 @@ def create_analysis_plots(df, output_dir='results'):
     df['date'] = df['watched_on'].dt.date
     df['hour'] = df['watched_on'].dt.hour
     df['week'] = df['watched_on'].dt.isocalendar().week
-    # Use month start date instead of period for better timezone handling
-    df['month'] = df['watched_on'].dt.to_period('M').astype(str)
+    # Use strftime to extract month as 'YYYY-MM' to avoid dropping timezone info
+    df['month'] = df['watched_on'].dt.strftime('%Y-%m')
     df['day_of_week'] = df['watched_on'].dt.day_name()
     
     # Set style for all plots
@@ -53,9 +54,6 @@ def create_analysis_plots(df, output_dir='results'):
     
     # 2. Monthly Category Distribution
     plt.figure(figsize=(15, 8))
-    
-    # Add month information with better formatting
-    df['month'] = pd.to_datetime(df['watched_on']).dt.strftime('%Y-%m')
     
     # Calculate total duration for each category
     category_totals = df.groupby('category')['duration'].sum().sort_values(ascending=False)
@@ -144,10 +142,59 @@ def create_analysis_plots(df, output_dir='results'):
     plt.savefig(os.path.join(output_dir, 'daily_distribution.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
+    # 5. Hypothesis Testing: Kruskal-Wallis H Test
+    # Prepare data for Kruskal-Wallis H test
+    groups = [group['duration'].values for name, group in df.groupby('month')]
+    
+    # Perform Kruskal-Wallis H test
+    h_stat, p_value = kruskal(*groups)
+    
+    # Determine the conclusion based on p-value
+    alpha = 0.05
+    if p_value < alpha:
+        conclusion = "Reject the null hypothesis: There are significant differences in viewing duration distributions across months."
+    else:
+        conclusion = "Fail to reject the null hypothesis: No significant differences in viewing duration distributions across months."
+    
     # Save summary statistics to a text file
     with open(os.path.join(output_dir, 'viewing_statistics.txt'), 'w') as f:
         f.write("Viewing Pattern Analysis Summary\n")
         f.write("=" * 40 + "\n\n")
+        
+        # Perform t-test for weekday vs weekend comparison
+        daily_totals = df.groupby(['date', 'day_of_week'])['duration'].sum().reset_index()
+        weekday_totals = daily_totals[daily_totals['day_of_week'].isin(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'])]['duration']
+        weekend_totals = daily_totals[daily_totals['day_of_week'].isin(['Saturday', 'Sunday'])]['duration']
+        
+        # Calculate statistics
+        weekday_total = weekday_totals.sum()
+        weekend_total = weekend_totals.sum()
+        weekday_daily_avg = weekday_total / len(weekday_totals)
+        weekend_daily_avg = weekend_total / len(weekend_totals)
+        
+        # Perform t-test on daily totals
+        t_stat, p_value_t = ttest_ind(weekday_totals, weekend_totals)
+        
+        # Determine conclusion for t-test
+        alpha = 0.05
+        if p_value_t < alpha:
+            weekday_weekend_conclusion = "Reject the null hypothesis: There is a significant difference in watch time between weekdays and weekends."
+        else:
+            weekday_weekend_conclusion = "Fail to reject the null hypothesis: There is no significant difference in watch time between weekdays and weekends."
+
+        f.write("Weekday vs Weekend Analysis:\n")
+        f.write("-" * 40 + "\n")
+        f.write(f"Total weekday watch time: {weekday_total:.1f} hours\n")
+        f.write(f"Total weekend watch time: {weekend_total:.1f} hours\n")
+        f.write(f"Average daily weekday watch time: {weekday_daily_avg:.1f} hours per day\n")
+        f.write(f"Average daily weekend watch time: {weekend_daily_avg:.1f} hours per day\n")
+        f.write(f"\nStatistical Test Results:\n")
+        f.write(f"T-statistic: {t_stat:.4f}\n")
+        if p_value_t < 0.001:
+            f.write("P-value: p < 0.001\n")
+        else:
+            f.write(f"P-value: {p_value_t:.4f}\n")
+        f.write(f"Conclusion: {weekday_weekend_conclusion}\n\n")
         
         f.write("General Statistics:\n")
         f.write("-" * 40 + "\n")
@@ -160,11 +207,33 @@ def create_analysis_plots(df, output_dir='results'):
         f.write("-" * 40 + "\n")
         for month, duration in monthly_watch.items():
             f.write(f"{month}: {duration:.1f} hours\n")
+        
+        f.write("\nHypothesis Testing: Temporal Analysis\n")
+        f.write("-" * 40 + "\n")
+        f.write("Null Hypothesis: The distributions of video watching duration are the same across all months.\n")
+        f.write("Alternative Hypothesis: The distributions of video watching duration differ across months.\n\n")
+        f.write("Note: Using Kruskal-Wallis H test instead of ANOVA because:\n")
+        f.write("1. The data is not normally distributed\n")
+        f.write("2. There are significant outliers in the viewing durations\n")
+        f.write("3. The test makes no assumptions about the distribution of the data\n\n")
+        f.write(f"Kruskal-Wallis H Test Results:\n")
+        f.write(f"H-statistic: {h_stat:.4f}\n")
+        # Format p-value with a conditional check
+        if p_value < 0.001:
+            f.write(f"P-value: p < 0.001\n")
+        else:
+            f.write(f"P-value: {p_value:.4f}\n")  # Format p-value in scientific notation
+        f.write(f"Conclusion: {conclusion}\n")
     
     return {
         'monthly_watch': monthly_watch,
         'hourly_pattern': hourly_pattern,
-        'daily_pattern': daily_pattern
+        'daily_pattern': daily_pattern,
+        'kruskal_wallis': {
+            'h_statistic': h_stat,
+            'p_value': p_value,
+            'conclusion': conclusion
+        }
     }
 
 def analyze_viewing_patterns(enhanced_categories_path, output_dir='results'):
@@ -172,7 +241,16 @@ def analyze_viewing_patterns(enhanced_categories_path, output_dir='results'):
     df = pd.read_csv(enhanced_categories_path)
     
     # Fix datetime parsing using ISO format and set timezone
-    df['watched_on'] = pd.to_datetime(df['watched_on'], format='ISO8601', utc=True)
+    # Removed any 'format' parameter to let pandas infer the format
+    df['watched_on'] = pd.to_datetime(df['watched_on'], utc=True, errors='coerce')
+    
+    # Check for any parsing errors
+    num_invalid_dates = df['watched_on'].isna().sum()
+    if num_invalid_dates > 0:
+        print(f"Warning: {num_invalid_dates} invalid datetime entries were found and set to NaT.")
+        # Optionally, you can drop these rows or handle them as needed
+        df = df.dropna(subset=['watched_on'])
+        print(f"Rows with invalid datetime entries have been removed. Remaining data points: {len(df)}")
     
     # Create the analysis plots and get the statistics
     stats = create_analysis_plots(df, output_dir)
@@ -182,7 +260,7 @@ def analyze_viewing_patterns(enhanced_categories_path, output_dir='results'):
     print("2. monthly_category_pattern.png - Monthly patterns by category")
     print("3. hourly_pattern.png - Distribution of watch time by hour")
     print("4. daily_distribution.png - Distribution of watch time by day of week")
-    print("5. viewing_statistics.txt - Detailed statistics and patterns")
+    print("5. viewing_statistics.txt - Detailed statistics and patterns, including ANOVA results")
 
 if __name__ == "__main__":
     # Specify the paths
