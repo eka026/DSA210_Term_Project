@@ -111,7 +111,7 @@ def generate_hashtag_wordcloud(csv_path, min_word_length=3, max_words=100):
         background_color='white',
         color_func=color_func,
         min_word_length=3,
-        max_words=60,              # Reduced number of words
+        max_words=70,              # Reduced number of words
         collocations=False,        # Disable collocations to prevent duplicates
         prefer_horizontal=0.75,
         relative_scaling=0.6,
