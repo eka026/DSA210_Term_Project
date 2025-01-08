@@ -149,13 +149,31 @@ def analyze_peak_period(peak_data, period_name, results_dir):
         ordered=True
     )
     
-    # Create the plot
-    ax = sns.barplot(data=category_analysis, x='total_hours', y='category', hue='month',
-                    palette=sns.color_palette('husl', n_colors=len(category_analysis['month'].unique())))
+    # Create the plot with improved styling
+    fig, ax = plt.subplots(figsize=(15, 10))
+    
+    # Create the horizontal bar plot
+    bars = sns.barplot(data=category_analysis, 
+                      x='total_hours', 
+                      y='category', 
+                      hue='month',
+                      palette=sns.color_palette('husl', n_colors=len(category_analysis['month'].unique())),
+                      ax=ax)
+    
+    # Customize the appearance
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    # Add grid lines
+    ax.yaxis.grid(False)
+    ax.xaxis.grid(True, linestyle='--', alpha=0.7)
+    
+    # Customize labels
     plt.title(f'Category Distribution - {period_name}', pad=20, size=14)
     plt.xlabel('Hours Watched', size=12)
     plt.ylabel('Category', size=12)
     
+    # Adjust layout and save
     plt.tight_layout()
     plt.savefig(os.path.join(results_dir, f'{period_name}_categories.png'), 
                 dpi=300, bbox_inches='tight')
@@ -168,12 +186,31 @@ def analyze_peak_period(peak_data, period_name, results_dir):
     
     channel_plot_data = channel_analysis[channel_analysis['channel'].isin(top_10_channels.index)]
     
-    ax = sns.barplot(data=channel_plot_data, x='total_hours', y='channel', hue='month',
-                    palette=sns.color_palette('husl', n_colors=len(channel_plot_data['month'].unique())))
+    # Create channel plot with similar styling
+    fig, ax = plt.subplots(figsize=(15, 10))
+    
+    # Create the horizontal bar plot
+    bars = sns.barplot(data=channel_plot_data, 
+                      x='total_hours', 
+                      y='channel', 
+                      hue='month',
+                      palette=sns.color_palette('husl', n_colors=len(channel_plot_data['month'].unique())),
+                      ax=ax)
+    
+    # Customize the appearance
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    # Add grid lines
+    ax.yaxis.grid(False)
+    ax.xaxis.grid(True, linestyle='--', alpha=0.7)
+    
+    # Customize labels
     plt.title(f'Top 10 Channels - {period_name}', pad=20, size=14)
     plt.xlabel('Hours Watched', size=12)
     plt.ylabel('Channel', size=12)
     
+    # Adjust layout and save
     plt.tight_layout()
     plt.savefig(os.path.join(results_dir, f'{period_name}_top_channels.png'), 
                 dpi=300, bbox_inches='tight')
