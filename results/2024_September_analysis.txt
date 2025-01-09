@@ -1,13 +1,14 @@
 === 2024_September Analysis ===
 
 
-2024-09 Analysis:
+Overall Period Analysis:
 --------------------------------------------------
 
 Overall Statistics:
 Total Hours: 134.0
 Unique Channels: 37
 Total Views: 184
+Period Coverage: 2024-09 to 2024-09
 
 Top 10 Subcategories:
 Education - exam_prep:
@@ -72,6 +73,3 @@ Midas (News & Politics):
 TradeAll (People & Blogs):
   Hours: 1.4
   Views: 3
-
-Validation Info:
-Channels filtered out: 27

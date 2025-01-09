@@ -1,13 +1,14 @@
 === 2023_September Analysis ===
 
 
-2023-09 Analysis:
+Overall Period Analysis:
 --------------------------------------------------
 
 Overall Statistics:
 Total Hours: 184.0
 Unique Channels: 55
 Total Views: 319
+Period Coverage: 2023-09 to 2023-09
 
 Top 10 Subcategories:
 Gaming - streaming:
@@ -72,6 +73,3 @@ Karakullukcu (Sports):
 Dankus Memecus (Gaming):
   Hours: 6.7
   Views: 17
-
-Validation Info:
-Channels filtered out: 45

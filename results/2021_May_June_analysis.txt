@@ -1,152 +1,75 @@
 === 2021_May_June Analysis ===
 
 
-2021-05 Analysis:
+Overall Period Analysis:
 --------------------------------------------------
 
 Overall Statistics:
-Total Hours: 244.5
-Unique Channels: 97
-Total Views: 559
+Total Hours: 413.8
+Unique Channels: 137
+Total Views: 1148
+Period Coverage: 2021-05 to 2021-06
 
 Top 10 Subcategories:
 Education - exam_prep:
-  Hours: 150.5 (61.6%)
-  Views: 187
+  Hours: 252.6 (61.0%)
+  Views: 358
 People & Blogs - other_people_blogs:
-  Hours: 19.7 (8.0%)
-  Views: 55
-Entertainment - other_entertainment:
-  Hours: 14.6 (6.0%)
-  Views: 19
-Education - other_education:
-  Hours: 12.6 (5.2%)
-  Views: 19
-Gaming - other_gaming:
-  Hours: 11.5 (4.7%)
-  Views: 13
+  Hours: 24.5 (5.9%)
+  Views: 84
 Gaming - strategy:
-  Hours: 10.1 (4.1%)
-  Views: 36
+  Hours: 22.1 (5.3%)
+  Views: 60
+Entertainment - other_entertainment:
+  Hours: 21.4 (5.2%)
+  Views: 39
+Gaming - streaming:
+  Hours: 16.3 (3.9%)
+  Views: 81
+Education - other_education:
+  Hours: 16.3 (3.9%)
+  Views: 30
+Gaming - other_gaming:
+  Hours: 15.5 (3.7%)
+  Views: 21
+Music - other:
+  Hours: 9.5 (2.3%)
+  Views: 117
 News & Politics - other:
-  Hours: 6.9 (2.8%)
-  Views: 8
-Gaming - streaming:
-  Hours: 5.1 (2.1%)
-  Views: 23
-Music - other:
-  Hours: 4.8 (2.0%)
-  Views: 46
-Gaming - gta:
-  Hours: 4.4 (1.8%)
-  Views: 2
-
-Top 10 Channels:
-Mert Hoca (Education):
-  Hours: 49.6
-  Views: 29
-VIP FİZİK (Education):
-  Hours: 39.1
-  Views: 45
-Orijinal Matematik (People & Blogs):
-  Hours: 11.4
-  Views: 33
-PewDiePie (Gaming):
-  Hours: 10.6
-  Views: 9
-Rehber Matematik (Education):
-  Hours: 10.1
-  Views: 4
-Sml Hoca Matematik (Education):
-  Hours: 7.2
-  Views: 5
-Efe Aydal (Entertainment):
-  Hours: 7.1
-  Views: 6
-Kenan Kara ile Geometri (Education):
-  Hours: 6.9
+  Hours: 8.7 (2.1%)
   Views: 12
-Temizlik Benim İşim (Entertainment):
-  Hours: 6.4
-  Views: 4
-HIZ VE RENK UZAKTAN EĞİTİM (Education):
-  Hours: 6.2
-  Views: 20
-
-Validation Info:
-Channels filtered out: 87
-
-2021-06 Analysis:
---------------------------------------------------
-
-Overall Statistics:
-Total Hours: 169.4
-Unique Channels: 97
-Total Views: 589
-
-Top 10 Subcategories:
-Education - exam_prep:
-  Hours: 102.1 (60.3%)
-  Views: 171
-Gaming - strategy:
-  Hours: 11.9 (7.1%)
-  Views: 24
-Gaming - streaming:
-  Hours: 11.2 (6.6%)
-  Views: 58
 Gaming - fps:
-  Hours: 8.0 (4.7%)
-  Views: 22
-Entertainment - other_entertainment:
-  Hours: 6.8 (4.0%)
-  Views: 20
-People & Blogs - other_people_blogs:
-  Hours: 4.8 (2.9%)
-  Views: 29
-Music - other:
-  Hours: 4.7 (2.8%)
-  Views: 71
-Gaming - other_gaming:
-  Hours: 4.0 (2.3%)
-  Views: 8
-Education - other_education:
-  Hours: 3.7 (2.2%)
-  Views: 11
-Gaming - minecraft:
-  Hours: 2.6 (1.6%)
-  Views: 5
+  Hours: 8.3 (2.0%)
+  Views: 27
 
 Top 10 Channels:
 Mert Hoca (Education):
-  Hours: 22.0
-  Views: 12
-3D Yayınları (Education):
-  Hours: 12.5
-  Views: 20
-tonguç KAMPÜS (Education):
-  Hours: 10.9
-  Views: 5
-Dost Kayaoğlu (Gaming):
-  Hours: 7.7
-  Views: 3
-Eyüp B. Matematik Geometri (Education):
-  Hours: 7.6
-  Views: 17
-biyorum (Education):
-  Hours: 7.6
-  Views: 25
+  Hours: 71.7
+  Views: 41
 VIP FİZİK (Education):
-  Hours: 7.1
+  Hours: 46.2
+  Views: 54
+Orijinal Matematik (People & Blogs):
+  Hours: 14.3
+  Views: 39
+tonguç KAMPÜS (Education):
+  Hours: 14.1
   Views: 9
-Fizik Makinesi (Education):
-  Hours: 6.8
-  Views: 15
-kimyabilen (Education):
-  Hours: 6.1
+PewDiePie (Gaming):
+  Hours: 14.1
   Views: 14
-TommyKay (Gaming):
-  Hours: 4.5
-  Views: 12
-
-Validation Info:
-Channels filtered out: 87
+3D Yayınları (Education):
+  Hours: 13.0
+  Views: 22
+Dost Kayaoğlu (Gaming):
+  Hours: 12.7
+  Views: 6
+kimyabilen (Education):
+  Hours: 11.9
+  Views: 24
+Efe Aydal (Entertainment):
+  Hours: 11.4
+  Views: 8
+Rehber Matematik (Education):
+  Hours: 10.5
+  Views: 6
