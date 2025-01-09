@@ -1,0 +1,49 @@
+=== Educational Focus Shift Hypothesis Test (2021 vs 2022) ===
+
+Period Comparison: May-June 2021 vs May-June 2022
+
+Hypothesis Test Results:
+==================================================
+Null Hypothesis (H₀): The proportion of educational content views remained the same
+Alternative Hypothesis (H₁): There was a significant change in the proportion of educational content views
+Test Used: Two-proportion z-test
+
+2021 Statistics:
+Total Views: 1491
+Education Views: 418
+Education Proportion: 28.0%
+Total Hours: 453.56
+Mean Duration: 00:39 (hh:mm)
+Median Duration: 00:25 (hh:mm)
+
+Duration Distribution:
+< 15min: 25.1%
+15-30min: 33.0%
+30-60min: 25.6%
+> 1hour: 16.3%
+
+2022 Statistics:
+Total Views: 1052
+Education Views: 488
+Education Proportion: 46.4%
+Total Hours: 341.35
+Mean Duration: 00:31 (hh:mm)
+Median Duration: 00:17 (hh:mm)
+
+Duration Distribution:
+< 15min: 44.5%
+15-30min: 28.1%
+30-60min: 13.7%
+> 1hour: 13.7%
+
+Z-Test Results:
+z-statistic: 9.5178
+p-value: 0.000000
+
+At α = 0.05:
+Reject H₀: There is strong statistical evidence of a change
+in the proportion of educational content views between 2021 and 2022 (p < 0.05)
+
+Year-over-Year Change: 65.5%
+
+Note: A positive change indicates an increase in educational content proportion

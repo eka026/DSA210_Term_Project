@@ -1,0 +1,30 @@
+=== Gaming Peak Period (2020-2021) Hypothesis Test ===
+
+Period Coverage: 2020-05 to 2021-02
+
+Hypothesis Test Results:
+==================================================
+Null Hypothesis (H₀): No difference in watch time between gaming and non-gaming content
+Alternative Hypothesis (H₁): Gaming content has higher watch time than non-gaming content
+
+Descriptive Statistics:
+
+Gaming Content:
+n = 1457
+Mean = 0.435 hours
+Median = 0.219 hours
+Std Dev = 0.797 hours
+
+Non-Gaming Content:
+n = 3959
+Mean = 0.178 hours
+Median = 0.076 hours
+Std Dev = 0.638 hours
+
+Mann-Whitney U Test Results:
+U-statistic: 4281761.5
+p-value: 0.000000
+
+At α = 0.05:
+Reject H₀: There is strong statistical evidence that gaming content
+has higher watch time than non-gaming content (p < 0.05)
