@@ -92,8 +92,6 @@ Kruskal-Wallis H Test Results:
 H-statistic: 2253.8504
 P-value: p < 0.001
 Conclusion: Reject the null hypothesis: There are significant differences in viewing duration distributions across months.
-Conclusion: Reject the null hypothesis: There are significant differences in viewing duration distributions across months.
-
 
 Time Period Analysis
 ----------------------------------------
