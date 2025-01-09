@@ -6,3 +6,5 @@ Average Monthly Duration: 88.24 hours
 Peak Month: 2021-05
 Top Category: Education
 Number of Unique Categories: 15
+Gini Coefficient: 0.749
+Top 20% Categories Share: 79.6%
