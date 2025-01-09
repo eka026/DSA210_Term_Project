@@ -1,149 +1,101 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import cross_val_score, KFold, cross_val_predict
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 import seaborn as sns
-from pathlib import Path
+import os
 
 # Create results directory if it doesn't exist
-Path("results").mkdir(parents=True, exist_ok=True)
+if not os.path.exists('results'):
+    os.makedirs('results')
 
-def prepare_features():
-    """Prepare features for classification without using subcategory."""
-    df = pd.read_csv('data/enhanced_categories.csv')
-    
-    features = pd.DataFrame()
-    
-    # Time-based features
-    df['watched_on'] = pd.to_datetime(df['watched_on'], format='ISO8601')
-    features['hour'] = df['watched_on'].dt.hour
-    features['day_of_week'] = df['watched_on'].dt.dayofweek
-    features['month'] = df['watched_on'].dt.month
-    
-    # Video features
-    features['duration'] = df['duration']
-    
-    # Channel encoding
-    le_channel = LabelEncoder()
-    features['channel_encoded'] = le_channel.fit_transform(df['channel'])
-    
-    # Target variable
-    le_category = LabelEncoder()
-    target = le_category.fit_transform(df['category'])
-    
-    return features, target, le_category.classes_
+# Read the data
+df = pd.read_csv('data/enhanced_categories.csv')
 
-def plot_confusion_matrix(y_test, y_pred, class_names):
-    """Create and save a detailed confusion matrix visualization."""
-    plt.figure(figsize=(20, 15))
-    
-    # Create confusion matrix and normalize it
-    cm = confusion_matrix(y_test, y_pred)
-    cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-    
-    # Create heatmap with improved readability
-    sns.heatmap(
-        cm_normalized,
-        annot=True,
-        fmt='.2f',
-        cmap='YlOrRd',  # Changed colormap for better visibility
-        xticklabels=class_names,
-        yticklabels=class_names,
-        square=True,  # Make cells square
-        cbar_kws={'label': 'Proportion of Predictions'}
-    )
-    
-    # Customize the plot
-    plt.title('Content Category Prediction Confusion Matrix\n(Normalized by True Category)', 
-              pad=20, size=16)
-    plt.xlabel('Predicted Category', size=12, labelpad=10)
-    plt.ylabel('True Category', size=12, labelpad=10)
-    
-    # Rotate labels for better readability
-    plt.xticks(rotation=45, ha='right')
-    plt.yticks(rotation=0)
-    
-    # Adjust layout to prevent label cutoff
-    plt.tight_layout()
-    
-    # Save the plot with high DPI for clarity
-    plt.savefig('results/confusion_matrix_revised.png', dpi=300, bbox_inches='tight')
-    plt.close()
+# Select top 5 categories by number of videos
+top_categories = df['category'].value_counts().nlargest(5).index
+df_filtered = df[df['category'].isin(top_categories)].copy()
 
-def plot_feature_importance(clf, feature_names):
-    """Plot feature importance without subcategory."""
-    plt.figure(figsize=(10, 6))
-    
-    importances = pd.DataFrame({
-        'feature': feature_names,
-        'importance': clf.feature_importances_
-    }).sort_values('importance', ascending=False)
-    
-    sns.barplot(data=importances, x='importance', y='feature')
-    plt.title('Feature Importance in Category Prediction', pad=20)
-    plt.xlabel('Importance Score')
-    plt.ylabel('Feature')
-    plt.tight_layout()
-    plt.savefig('results/feature_importance_revised.png', dpi=300)
-    plt.close()
+# Encode channel names
+label_encoder = LabelEncoder()
+df_filtered['channel_encoded'] = label_encoder.fit_transform(df_filtered['channel'])
 
-def main():
-    print("Preparing features (without subcategory)...")
-    features, target, class_names = prepare_features()
-    
-    print("Training and evaluating model...")
-    # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(
-        features, target, test_size=0.2, random_state=42, stratify=target
-    )
-    
-    # Scale features
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-    
-    # Train model
-    clf = RandomForestClassifier(
-        n_estimators=100,
-        class_weight='balanced',
-        max_depth=10,
-        min_samples_split=5,
-        min_samples_leaf=2,
-        random_state=42
-    )
-    
-    clf.fit(X_train_scaled, y_train)
-    
-    # Evaluate
-    train_score = clf.score(X_train_scaled, y_train)
-    test_score = clf.score(X_test_scaled, y_test)
-    y_pred = clf.predict(X_test_scaled)
-    
-    print("\nModel Performance:")
-    print(f"Training Accuracy: {train_score:.3f}")
-    print(f"Testing Accuracy: {test_score:.3f}")
-    print(f"Difference: {abs(train_score - test_score):.3f}")
-    
-    print("\nClassification Report:")
-    print(classification_report(y_test, y_pred, target_names=class_names))
-    
-    print("\nCreating visualizations...")
-    plot_confusion_matrix(y_test, y_pred, class_names)
-    plot_feature_importance(clf, features.columns)
-    
-    print("\nMost Important Features:")
-    feature_importance = pd.DataFrame({
-        'feature': features.columns,
-        'importance': clf.feature_importances_
-    }).sort_values('importance', ascending=False)
-    print(feature_importance)
-    
-    print("\nVisualizations have been saved to the 'results' folder:")
-    print("- confusion_matrix_revised.png")
-    print("- feature_importance_revised.png")
+# Prepare features
+X = df_filtered[['duration', 'channel_encoded']]
+y = df_filtered['category']
 
-if __name__ == "__main__":
-    main()
+# Initialize model
+model = DecisionTreeClassifier(max_depth=6, random_state=42)
+
+# Perform k-fold cross-validation
+k_folds = 5
+kf = KFold(n_splits=k_folds, shuffle=True, random_state=42)
+
+# Get cross-validation scores
+cv_scores = cross_val_score(model, X, y, cv=kf)
+
+# Get predictions for confusion matrix
+y_pred = cross_val_predict(model, X, y, cv=kf)
+
+# Print cross-validation results
+print("\nCross-validation scores:", cv_scores)
+print(f"Average CV Score: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})")
+
+# Create classification report as DataFrame
+report = classification_report(y, y_pred, zero_division=0, output_dict=True)
+report_df = pd.DataFrame(report).round(3)
+
+# Reorder and rename columns
+report_df = report_df.T.reset_index()
+report_df.columns = ['Category', 'Precision', 'Recall', 'F1-score', 'Support']
+report_df = report_df[~report_df['Category'].isin(['accuracy', 'macro avg', 'weighted avg'])]
+
+# Print formatted table
+print("\nClassification Report:")
+print("\n" + report_df.to_string(index=False))
+
+# Also print the overall metrics
+print("\nOverall Metrics:")
+overall_metrics = pd.DataFrame({
+    'Metric': ['Accuracy', 'Macro Avg', 'Weighted Avg'],
+    'Value': [
+        report['accuracy'],
+        np.mean([report[cat]['f1-score'] for cat in top_categories]),
+        report['weighted avg']['f1-score']
+    ]
+}).round(3)
+print("\n" + overall_metrics.to_string(index=False))
+
+# Create and save confusion matrix
+plt.figure(figsize=(10, 8))
+cm = confusion_matrix(y, y_pred)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=top_categories,
+            yticklabels=top_categories)
+plt.title('Confusion Matrix (Cross-validated)')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('results/confusion_matrix_cv.png')
+plt.close()
+
+# Train final model on full dataset
+model.fit(X, y)
+
+# Print feature importance
+feature_names = ['duration', 'channel']
+print("\nFeature Importances:")
+for name, importance in zip(feature_names, model.feature_importances_):
+    print(f"{name}: {importance:.3f}")
+
+# Print some channel information
+print("\nSample of Channel Encoding:")
+sample_channels = pd.DataFrame({
+    'channel': label_encoder.classes_[:5],  # Show first 5 channels
+    'encoded_value': range(5)
+})
+print(sample_channels)
