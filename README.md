@@ -2,6 +2,20 @@
 
 For the presentation, please click [here](https://sites.google.com/view/termprojectpresentation?usp=sharing).
 
+---
+## Table of Contents
+1. [Introduction and Motivation](#introduction-and-motivation)
+2. [Dataset Description](#dataset-description)
+3. [Project Idea](#project-idea)
+4. [Project Plan](#project-plan)
+   - [1. Data Collection](#1-data-collection)
+   - [2. Data Preprocessing](#2-data-preprocessing)
+   - [3. Exploratory Data Analysis (EDA)](#3-exploratory-data-analysis-eda)
+   - [4. Data Visualization](#4-data-visualization)
+   - [5. Machine Learning](#5-machine-learning)
+   - [6. Findings and Interpretation](#6-findings-and-interpretation)
+
+---
 ## Introduction and Motivation
 Social media holds an important place in our lives and is one of the easiest platforms to access for meeting our daily entertainment needs. The same is true for me, as I also spend time on YouTube throughout the day. 
 
