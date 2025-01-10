@@ -1,6 +1,7 @@
 # Analyzing My YouTube Usage
 
 For the final report, please click [here](https://sites.google.com/view/termprojectpresentation?usp=sharing).
+If you have any issues here, please go to `report.pdf` for final report.
 
 ## Table of Contents
 * [Introduction and Motivation](#introduction-and-motivation)
