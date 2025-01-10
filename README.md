@@ -1,5 +1,7 @@
 # Analyzing My YouTube Usage
 
+For the presentation, please click [here](https://sites.google.com/view/termprojectpresentation?usp=sharing).
+
 ## Introduction and Motivation
 Social media holds an important place in our lives and is one of the easiest platforms to access for meeting our daily entertainment needs. The same is true for me, as I also spend time on YouTube throughout the day. 
 
