@@ -18,8 +18,6 @@ Social media holds an important place in our lives and is one of the easiest pla
 
 Over the years, the content, categories, and watch durations of the videos I have watched have changed during different periods. Through this project, I analyzed changes in my viewing preferences over time, the factors that influence them, and how my watch durations behaved. This project helped me learn more about myself and provided an opportunity to practice data analysis.
 
-## Tools
-
 ## Data Source
 The dataset for this project is my personal YouTube watch history, downloaded using **Google Takeout**. 
 
