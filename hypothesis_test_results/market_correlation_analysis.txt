@@ -24,8 +24,6 @@ XU100 Value: 7000
 Correlation Analysis:
 ==================================================
 Pearson Correlation Coefficient: 0.8069
-
-Interpretation:
 There is a strong positive correlation between
 stock market content viewing duration and XU100 performance.
 
