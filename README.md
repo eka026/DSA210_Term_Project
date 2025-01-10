@@ -3,13 +3,14 @@
 For the final report, please click [here](https://sites.google.com/view/termprojectpresentation?usp=sharing).
 
 ## Table of Contents
-[Introduction and Motivation](#introduction-and-motivation)
-[Data Source](#data-source)
-[Data Preprocessing](#data-preprocessing)
-[Data Visualization](#data-visualization)
-[Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
-[Machine Learning Experiment](#machine-learning-experiment)
-[Findings and Interpretation](#findings-and-interpretation)
+* [Introduction and Motivation](#introduction-and-motivation)
+* [Data Source](#data-source)
+* [Data Preprocessing](#data-preprocessing)
+* [Data Visualization](#data-visualization)
+* [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
+* [Machine Learning Experiment](#machine-learning-experiment)
+* [Findings and Interpretation](#findings-and-interpretation)
+* [Limitations and Future Work](#limitations-and-future-work)
 
 
 ## Introduction and Motivation
